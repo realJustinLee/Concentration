@@ -38,5 +38,9 @@ class Concentration {
             cards += [card,card]
         }
         // TODO: Shuffle the cards
+        for cardIndex in 0..<cards.count {
+            let randomIndex = Int(arc4random_uniform(UInt32(cards.count)))
+            cards.swapAt(cardIndex, randomIndex)
+        }
     }
 }
