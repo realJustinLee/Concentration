@@ -17,16 +17,33 @@ class ViewController: UIViewController {
             flipCountLabel.text = "Flips: \(flipCount)"
         }
     }
-
+    
+    var scoreCount = 0{
+        didSet{
+            scoreCountLabel.text = "Score: \(scoreCount)"
+        }
+    }
+    
+    @IBOutlet weak var scoreCountLabel: UILabel!
+    
     @IBOutlet weak var flipCountLabel: UILabel!
     
     @IBOutlet var cardButtons: [UIButton]!
     
+    @IBAction func setNewGame(_ sender: UIButton) {
+        game = Concentration(numbersOfPairsOfCards: (cardButtons.count + 1) / 2)
+        emojiChoices = emojiThemes[randomTheme]!
+        updateViewFromModel()
+        flipCount = 0
+        scoreCount = 0
+    }
+    
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
+            scoreCount = game.score
+            flipCount = game.flips
         } else {
             print("Chosen card was not in cardButtons")
         }
@@ -46,7 +63,23 @@ class ViewController: UIViewController {
         }
     }
     
-    var emojiChoices = ["🦇","😱","🙀","😈","🎃","👻","🍭","🍬","🍎"]
+    var emojiThemes = ["halloween" : ["🦇","😱","🙀","👿","🎃","👻","🍭","🍬","🍎","🌑"],
+                       "animals" : ["🐶","🐱","🐼","🐰","🐻","🐯","🐵","🦆","🦋","🐿"],
+                       "sports" : ["⚽️","🏀","🏈","⚾️","🎾","🏸","🥊","🏄🏼‍♂️","🚴‍♀️","🏊🏽‍♂️"],
+                       "food" : ["🍇","🍓","🍌","🌽","🍔","🍟","🍝","🍩","🍫","🍿"],
+                       "space" : ["🚀","🛰","🛸","🌑","🌕","🌎","☄️","🌌","📡","🔭"],
+                       "entertainments" : ["🎥","💸","🌋","🗽","🗿","🗺","🏝","🚠","🎮","🎬"]]
+    
+    lazy var emojiKeys = Array(emojiThemes.keys)
+    
+    lazy var emojiChoices = emojiThemes[randomTheme]!
+    
+    var randomTheme : String{
+        get{
+            let randomIndex = Int(arc4random_uniform(UInt32(emojiKeys.count)))
+            return emojiKeys[randomIndex]
+        }
+    }
     
     var emoji = [Int:String]()
     
@@ -62,12 +95,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
 }
 
