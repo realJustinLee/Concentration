@@ -2,7 +2,7 @@
 //  ConcentrationTests.swift
 //  ConcentrationTests
 //
-//  Created by Justin Dell Adam on 1/15/18.
+//  Created by Justin Lee on 1/15/18.
 //  Copyright © 2018 Li Xin. All rights reserved.
 //
 
